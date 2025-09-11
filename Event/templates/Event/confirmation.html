@@ -1,0 +1,9 @@
+{% extends "Event/layout.html" %}
+{% block title %}Attendance Confirmation{% endblock %}
+
+{% block content %}
+<div class="card-custom text-center">
+    <h2>{{ message }}</h2>
+    <a href="{% url 'dashboard' %}" class="btn btn-primary mt-3">Go to Dashboard</a>
+</div>
+{% endblock %}

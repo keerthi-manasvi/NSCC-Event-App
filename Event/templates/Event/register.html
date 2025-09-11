@@ -1,0 +1,40 @@
+{% extends "Event/layout.html" %}
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<style>
+    .card,
+    .card-custom,
+    .glass-card {
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(10px);
+        border-radius: 12px;
+        padding: 2rem;
+        box-shadow: 8px 1px 8px 6px rgba(119, 110, 110, 0.1);
+        margin: 2rem auto;
+        max-width: 400px;
+        transition: transform 0.3s ease;
+    }
+</style>
+<div class="d-flex justify-content-center mt-5">
+    <div style="width: 100%; max-width: 400px; margin-top: 80px;">
+        <h2 class="card-title text-center mb-4">REGISTER PARTICIPANT</h2>
+        <div class="card-body" style="margin-top: 20px">
+            <div class="glass-card" style="width: 100%; max-width: 350px;">
+                {% if message %}
+                <div class="alert alert-danger text-center">{{ message }}</div>
+                {% endif %}
+                <div class="text-center mt-3">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-secondary text-center"
+                            style="background-color: #0d6efd ; margin-top : 10px">Register
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

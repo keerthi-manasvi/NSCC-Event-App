@@ -1,0 +1,14 @@
+{% extends "Event/layout.html" %}
+
+{% block title %}Registration Successful{% endblock %}
+
+{% block content %}
+<div class="card-custom text-center">
+    <h2 class="text-success mb-3">Registration Successful 🎉</h2>
+    <p><strong>Name:</strong> {{ participant.name }}</p>
+    <p><strong>Email:</strong> {{ participant.email }}</p>
+    <p><strong>ID:</strong> {{ participant.registration_id }}</p>
+    <img src="{{ participant.qr_code.url }}" alt="QR Code" class="img-fluid my-3" style="max-width:200px;">
+    <a href="{% url 'register' %}" class="btn btn-secondary mt-2">Register Another</a>
+</div>
+{% endblock %}

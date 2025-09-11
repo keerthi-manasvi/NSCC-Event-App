@@ -1,0 +1,244 @@
+/* === Base Reset & Typography === */
+body {
+    font-family: 'Segoe UI', 'Inter', sans-serif;
+    background-color: #f8f9fa;
+    color: #1f2937;
+    margin: 0;
+    padding: 0;
+    /* Optional background image */
+    /*
+    background-image: url("{% static 'images/images.jpg' %}");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    */
+}
+
+/* === Header & Navbar === */
+header,
+.navbar {
+    background-color: black;
+    color: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+header h1,
+.navbar-brand {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: white;
+    text-decoration: none;
+}
+
+/* === Navigation Buttons === */
+nav a,
+.navbar .btn {
+    margin: 0 0.5rem;
+    padding: 0.4rem 0.8rem;
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+nav a:hover,
+.navbar .btn:hover {
+    background-color: #e0e7ff;
+    color: black;
+    border-color: #e0e7ff;
+}
+
+/* === Card Styling === */
+.glass-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 2rem;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* === Form Container === */
+.card-body {
+    margin-top: 90px;
+}
+
+.card-title {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+/* === Table Styling === */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+thead {
+    background-color: #e0e7ff;
+}
+
+th,
+td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.badge {
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.bg-success {
+    background-color: #10b981;
+    color: white;
+}
+
+.bg-danger {
+    background-color: #ef4444;
+    color: white;
+}
+
+/* === Buttons === */
+.btn {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+    margin-top: 1rem;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.btn-primary {
+    background-color: black;
+    color: white;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #333;
+}
+
+.btn-secondary {
+    background-color: #0d6efd;
+    color: white;
+    border: none;
+}
+
+.btn-secondary:hover {
+    background-color: #4b5563;
+}
+
+.btn-success {
+    background-color: #10b981;
+    color: white;
+    border: none;
+}
+
+.btn-success:hover {
+    background-color: #059669;
+}
+
+/* === Forms === */
+form {
+    max-width: 100%;
+    padding: 0;
+    background-color: transparent;
+    box-shadow: none;
+    border-radius: 0;
+}
+
+.form-control {
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #10b981;
+    box-shadow: 0 0 0 0.2rem rgba(16, 185, 129, 0.25);
+    outline: none;
+}
+
+.form-control:hover {
+    border-color: #10b981;
+}
+
+/* === Alerts === */
+.alert-danger {
+    background-color: #fee2e2;
+    color: #b91c1c;
+    border: 1px solid #fca5a5;
+    border-radius: 8px;
+    padding: 0.75rem;
+}
+
+/* === Footer === */
+footer {
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.875rem;
+}
+
+/* === Responsive === */
+@media (max-width: 640px) {
+
+    .card-custom,
+    .glass-card,
+    form {
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+
+    nav a,
+    .navbar .btn {
+        display: block;
+        margin: 0.5rem auto;
+        width: 100%;
+        text-align: center;
+    }
+
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

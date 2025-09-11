@@ -1,0 +1,13 @@
+{% extends "Event/layout.html" %}
+
+{% block title %}Error{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2 style="color: red;">Error</h2>
+    <p>{{ message }}</p>
+    <a href="{% url 'dashboard' %}">
+        <button>Back to Dashboard</button>
+    </a>
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "Event/layout.html" %}
+{% block title %}Sign Up{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-center mt-5">
+    <div style="width: 100%; max-width: 400px; margin-top: 80px;">
+        <h2 class="card-title text-center mb-4">CREATE ACCOUNT</h2>
+        <div class="card-body" style="margin-top: 20px">
+            <div class="glass-card" style="width: 100%; max-width: 350px;">
+                {% if message %}
+                <div class="alert alert-danger text-center">{{ message }}</div>
+                {% endif %}
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="text" name="username" class="form-control" placeholder="Username" required>
+                    <input type="email" name="email" class="form-control" placeholder="Email" required>
+                    <input type="password" name="password" class="form-control" placeholder="Password" required>
+                    <input type="password" name="confirmation" class="form-control" placeholder="Confirm Password"
+                        required>
+                    <button type="submit" class="btn btn-secondary text-center">Sign Up</button>
+                </form>
+                <div class="text-center mt-3">
+                    <p style="font-weight: bold;">Already have an account? <a href="{% url 'login' %}">Log In</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
