@@ -1,6 +1,12 @@
-Django==5.2.5
+# Core framework
+Django==5.2.6
+
+# Deployment essentials
 gunicorn
 dj-database-url
 whitenoise
 psycopg2-binary
+
+# QR Code generation
 qrcode[pil]
+Pillow
