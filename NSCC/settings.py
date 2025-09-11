@@ -15,7 +15,7 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = '8zs^f&anmj6ku%qhv!lsiy-cmd2bbc$ehc0j+7ea)yqvd)(@_n' 
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'fallback-secret') 
 
 DEBUG = False
 
