@@ -1,1 +1,1 @@
-web: gunicorn Event.wsgi
+web: gunicorn NSCC.wsgi
