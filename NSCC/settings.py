@@ -64,7 +64,7 @@ WSGI_APPLICATION = 'NSCC.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL'),
+        default=os.environ.get('postgresql://nscc_db_user:uRA1xTKfxH2vPNVHT2PIirsgKPNQwwDL@dpg-d31h6hqdbo4c73fq6u7g-a.oregon-postgres.render.com/nscc_db'),
         conn_max_age=600,
         ssl_require=True
     )
