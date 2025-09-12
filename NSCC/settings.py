@@ -15,11 +15,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    'localhost',
-    '192.168.1.33',
-    '127.0.0.1',
-    '0.0.0.0',
-    'nscc-event-app1.onrender.com',
+    'nscc-event-app2.onrender.com',
 ]
 
 # Installed apps
