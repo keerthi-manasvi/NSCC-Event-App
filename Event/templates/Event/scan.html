@@ -49,7 +49,9 @@ document.addEventListener("DOMContentLoaded", () => {
     function startScanner() {
         Html5Qrcode.getCameras().then(cameras => {
             if (cameras && cameras.length) {
-                const cameraId = cameras[0].id; // use first camera
+                // Pick back camera if available
+                let cameraId = cameras.find(cam => cam.label.toLowerCase().includes("back"))?.id || cameras[0].id;
+
                 html5QrCode.start(
                     { deviceId: { exact: cameraId } },
                     { fps: 10, qrbox: 250 },
@@ -59,7 +61,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         html5QrCode.stop().then(() => {
                             console.log("Scanner stopped");
 
-                            // Send to backend
                             fetch(`/mark_attendance/${qrCodeMessage}/`)
                                 .then(res => res.json())
                                 .then(data => {
@@ -70,7 +71,6 @@ document.addEventListener("DOMContentLoaded", () => {
                                     document.getElementById("result").innerText = "Error marking attendance";
                                 });
 
-                            // Restart scanner after 3 seconds
                             setTimeout(() => {
                                 document.getElementById("result").innerText = "";
                                 startScanner();
@@ -86,6 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     console.error("Camera start failed:", err);
                     document.getElementById("result").innerText = "Camera error: " + err;
                 });
+
             } else {
                 document.getElementById("result").innerText = "No camera found";
             }
