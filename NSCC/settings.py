@@ -19,7 +19,7 @@ ALLOWED_HOSTS = [
     '192.168.1.33',
     '127.0.0.1',
     '0.0.0.0',
-    'nscc-event-app-6.onrender.com',
+    'nscc-event-app1.onrender.com',
 ]
 
 # Installed apps
