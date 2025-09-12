@@ -9,8 +9,6 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
-    
     <!-- Your Custom CSS -->
     <link rel="stylesheet" href="{% static 'Event/styles.css' %}">
 </head>
@@ -19,20 +17,19 @@
     <nav class="navbar navbar-dark bg-dark px-3">
         <span class="navbar-brand">EVENT ATTENDANCE</span>
         <div class="d-flex align-items-center flex-wrap">
-
             {% if user.is_authenticated %}
-            <a class="btn btn-outline-light me-2 btn-sm" href="{% url 'dashboard' %}">Dashboard</a>
-            <a class="btn btn-outline-light btn-sm" href="{% url 'logout' %}">Logout</a>
+                <a class="btn btn-outline-light me-2 btn-sm" href="{% url 'dashboard' %}">Dashboard</a>
+                <a class="btn btn-outline-light btn-sm" href="{% url 'logout' %}">Logout</a>
             {% else %}
-            <a class="btn btn-outline-light me-2 btn-sm" href="{% url 'register' %}">Register</a>
-            <a class="btn btn-outline-light me-2 btn-sm" href="{% url 'scan' %}">Scan QR</a>
-            <a class="btn btn-outline-light btn-sm" href="{% url 'login' %}">Login</a>
+                <a class="btn btn-outline-light me-2 btn-sm" href="{% url 'register' %}">Register</a>
+                <a class="btn btn-outline-light me-2 btn-sm" href="{% url 'scan' %}">Scan QR</a>
+                <a class="btn btn-outline-light btn-sm" href="{% url 'login' %}">Login</a>
             {% endif %}
         </div>
     </nav>
+
     <main class="container my-4">
-        {% block content %}
-        {% endblock %}
+        {% block content %}{% endblock %}
     </main>
 
     <footer class="bg-primary text-white text-center py-2 fixed-bottom" style="background-color: black !important">
@@ -41,6 +38,10 @@
 
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
 
+    <!-- Html5 QR Code library loaded once here -->
+    <script src="https://unpkg.com/html5-qrcode@2.3.7/minified/html5-qrcode.min.js"></script>
+
+    {% block extra_scripts %}{% endblock %}
+</body>
 </html>
