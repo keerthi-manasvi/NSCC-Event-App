@@ -5,6 +5,7 @@ import uuid
 from io import BytesIO
 import qrcode
 from django.core.validators import EmailValidator
+from django.core.files.base import File
 
 class User(AbstractUser):
     objects = UserManager()
@@ -34,7 +35,7 @@ class Participant(models.Model):
             # Save to ImageField
             blob = BytesIO()
             img.save(blob, 'PNG')
-            self.qr_code_image.save(f'{self.registration_id}.png', File(blob), save=False)
+            self.qr_code_image.save(f'qr_{self.registration_id}.png', File(blob), save=False)
 
         super().save(*args, **kwargs)
         

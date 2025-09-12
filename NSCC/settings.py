@@ -10,11 +10,13 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Security
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'fallback-secret')
-DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+#DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+DEBUG = False
 
 ALLOWED_HOSTS = [
     'localhost',
+    '192.168.1.33',
     '127.0.0.1',
     '0.0.0.0',
     'nscc-event-app-5.onrender.com',
@@ -80,6 +82,10 @@ LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Asia/Kolkata'
 USE_I18N = True
 USE_TZ = True
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = True
 
 # Static files
 STATIC_URL = '/static/'

@@ -1,10 +1,11 @@
 {% extends "Event/layout.html" %}
-
+{% load static %}
 {% block title %}Scan QR{% endblock %}
 
 {% block content %}
 <style>
-    .card, .card-custom {
+    .card,
+    .card-custom {
         background: rgba(255, 255, 255, 0.85);
         backdrop-filter: blur(10px);
         border-radius: 12px;
@@ -15,6 +16,7 @@
         text-align: center;
         transition: transform 0.3s ease;
     }
+
     #preview {
         width: 100%;
         max-width: 400px;
@@ -25,6 +27,7 @@
         border: 2px solid #ddd;
         background-color: #000;
     }
+
     #result {
         margin-top: 1rem;
         font-weight: bold;
@@ -43,55 +46,55 @@
 {% block extra_scripts %}
 <script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.7/minified/html5-qrcode.min.js" defer></script>
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-    const qrCodeRegionId = "preview";
-    const html5QrCode = new Html5Qrcode(qrCodeRegionId);
+    document.addEventListener("DOMContentLoaded", () => {
+        const qrCodeRegionId = "preview";
+        const html5QrCode = new Html5Qrcode(qrCodeRegionId);
 
-    function startScanner() {
-        Html5Qrcode.getCameras().then(cameras => {
-            if (cameras && cameras.length) {
-                let cameraId = cameras.find(cam => cam.label.toLowerCase().includes("back"))?.id || cameras[0].id;
+        function startScanner() {
+            Html5Qrcode.getCameras().then(cameras => {
+                if (cameras && cameras.length) {
+                    let cameraId = cameras.find(cam => cam.label.toLowerCase().includes("back"))?.id || cameras[0].id;
 
-                html5QrCode.start(
-                    { deviceId: { exact: cameraId } },
-                    { fps: 10, qrbox: 250 },
-                    qrCodeMessage => {
-                        console.log("Scanned QR:", qrCodeMessage);
+                    html5QrCode.start(
+                        { deviceId: { exact: cameraId } },
+                        { fps: 10, qrbox: 250 },
+                        qrCodeMessage => {
+                            console.log("Scanned QR:", qrCodeMessage);
 
-                        html5QrCode.stop().then(() => {
-                            fetch(`/mark_attendance/${qrCodeMessage}/`)
-                                .then(res => res.json())
-                                .then(data => {
-                                    document.getElementById("result").innerText = data.message;
-                                })
-                                .catch(() => {
-                                    document.getElementById("result").innerText = "Error marking attendance";
-                                });
+                            html5QrCode.stop().then(() => {
+                                fetch(`/mark_attendance/${qrCodeMessage}/`)
+                                    .then(res => res.json())
+                                    .then(data => {
+                                        document.getElementById("result").innerText = data.message;
+                                    })
+                                    .catch(() => {
+                                        document.getElementById("result").innerText = "Error marking attendance";
+                                    });
 
-                            setTimeout(() => {
-                                document.getElementById("result").innerText = "";
-                                startScanner();
-                            }, 3000);
-                        }).catch(err => console.error("Stop failed:", err));
-                    },
-                    errorMessage => {
-                        console.warn("QR Scan Error:", errorMessage);
-                    }
-                ).catch(err => {
-                    console.error("Camera start failed:", err);
-                    document.getElementById("result").innerText = "Camera error: " + err;
-                });
+                                setTimeout(() => {
+                                    document.getElementById("result").innerText = "";
+                                    startScanner();
+                                }, 3000);
+                            }).catch(err => console.error("Stop failed:", err));
+                        },
+                        errorMessage => {
+                            console.warn("QR Scan Error:", errorMessage);
+                        }
+                    ).catch(err => {
+                        console.error("Camera start failed:", err);
+                        document.getElementById("result").innerText = "Camera error: " + err;
+                    });
 
-            } else {
-                document.getElementById("result").innerText = "No camera found";
-            }
-        }).catch(err => {
-            console.error("Camera access error:", err);
-            document.getElementById("result").innerText = "Cannot access camera";
-        });
-    }
+                } else {
+                    document.getElementById("result").innerText = "No camera found";
+                }
+            }).catch(err => {
+                console.error("Camera access error:", err);
+                document.getElementById("result").innerText = "Cannot access camera";
+            });
+        }
 
-    startScanner();
-});
+        startScanner();
+    });
 </script>
 {% endblock %}
