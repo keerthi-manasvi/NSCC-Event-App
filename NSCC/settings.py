@@ -6,18 +6,18 @@ import os
 import dj_database_url
 from pathlib import Path
 
+# Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
-os.makedirs(os.path.join(settings.MEDIA_ROOT, 'qr_codes'), exist_ok=True)
+
 # Security
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'fallback-secret')
-
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     '0.0.0.0',
-    'nscc-event-app-5.onrender.com',  
+    'nscc-event-app-5.onrender.com',
 ]
 
 # Installed apps
@@ -89,6 +89,10 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Media files (for uploaded QR codes)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# Ensure media directories exist
+os.makedirs(MEDIA_ROOT, exist_ok=True)
+os.makedirs(os.path.join(MEDIA_ROOT, 'qr_codes'), exist_ok=True)
 
 # Auto primary key field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
