@@ -6,6 +6,7 @@ import os
 import dj_database_url
 from pathlib import Path
 
+# BASE_DIR
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Security
@@ -62,7 +63,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'NSCC.wsgi.application'
 
-# Database (Render provides DATABASE_URL automatically)
+# Database
 DATABASES = {
     'default': dj_database_url.config(
         default=os.environ.get('DATABASE_URL'),
@@ -85,12 +86,9 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Media files (for uploaded QR codes)
+# Media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
-
-# Ensure QR code folder exists
-os.makedirs(os.path.join(MEDIA_ROOT, 'qr_codes'), exist_ok=True)
 
 # Auto primary key field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
