@@ -6,7 +6,6 @@ import os
 import dj_database_url
 from pathlib import Path
 
-# Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Security
@@ -48,7 +47,7 @@ ROOT_URLCONF = 'NSCC.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [BASE_DIR / 'templates'],  # Optional global templates folder
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -63,7 +62,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'NSCC.wsgi.application'
 
-# Database
+# Database (Render provides DATABASE_URL automatically)
 DATABASES = {
     'default': dj_database_url.config(
         default=os.environ.get('DATABASE_URL'),
@@ -90,8 +89,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# Ensure media folders exist
-os.makedirs(MEDIA_ROOT, exist_ok=True)
+# Ensure QR code folder exists
 os.makedirs(os.path.join(MEDIA_ROOT, 'qr_codes'), exist_ok=True)
 
 # Auto primary key field
