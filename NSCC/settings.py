@@ -15,7 +15,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'nscc-event-app2.onrender.com',
+    'nscc-event-app3.onrender.com',
 ]
 
 # Installed apps
