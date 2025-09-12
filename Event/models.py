@@ -21,6 +21,21 @@ class Participant(models.Model):
     qr_code_image = models.ImageField(upload_to='qr_codes/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def save(self, *args, **kwargs):
+        if not self.qr_code_image:
+            # Generate QR code
+            qr = qrcode.QRCode(version=1, box_size=10, border=5)
+            qr.add_data(self.registration_id)
+            qr.make(fit=True)
+            img = qr.make_image(fill_color="black", back_color="white")
+
+            # Save to ImageField
+            blob = BytesIO()
+            img.save(blob, 'PNG')
+            self.qr_code_image.save(f'{self.registration_id}.png', File(blob), save=False)
+
+        super().save(*args, **kwargs)
+        
     def __str__(self):
         return f"{self.name} ({self.registration_id})"
 
