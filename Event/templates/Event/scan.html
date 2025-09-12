@@ -39,6 +39,9 @@
     <p id="result"></p>
 </div>
 
+<!-- Include Html5 QR Code library -->
+<script src="https://unpkg.com/html5-qrcode@2.3.7/minified/html5-qrcode.min.js"></script>
+
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -48,7 +51,6 @@ document.addEventListener("DOMContentLoaded", () => {
     function startScanner() {
         Html5Qrcode.getCameras().then(cameras => {
             if (cameras && cameras.length) {
-                // Pick back camera if available
                 let cameraId = cameras.find(cam => cam.label.toLowerCase().includes("back"))?.id || cameras[0].id;
 
                 html5QrCode.start(
