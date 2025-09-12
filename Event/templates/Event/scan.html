@@ -23,6 +23,7 @@
         border-radius: 12px;
         overflow: hidden;
         border: 2px solid #ddd;
+        background-color: #000;
     }
     #result {
         margin-top: 1rem;
@@ -41,48 +42,61 @@
 <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-    const html5QrCode = new Html5Qrcode("preview");
+
+    const qrCodeRegionId = "preview";
+    const html5QrCode = new Html5Qrcode(qrCodeRegionId);
 
     function startScanner() {
-        html5QrCode.start(
-            { facingMode: "environment" },
-            { fps: 10, qrbox: 250 },
-            qrCodeMessage => {
-                console.log("Scanned QR:", qrCodeMessage);
+        Html5Qrcode.getCameras().then(cameras => {
+            if (cameras && cameras.length) {
+                const cameraId = cameras[0].id; // use first camera
+                html5QrCode.start(
+                    { deviceId: { exact: cameraId } },
+                    { fps: 10, qrbox: 250 },
+                    qrCodeMessage => {
+                        console.log("Scanned QR:", qrCodeMessage);
 
-                html5QrCode.stop().then(() => {
-                    console.log("QR scanning stopped.");
+                        html5QrCode.stop().then(() => {
+                            console.log("Scanner stopped");
 
-                    // Send scanned QR code to backend
-                    fetch(`/mark_attendance/${qrCodeMessage}/`)
-                        .then(res => res.json())
-                        .then(data => {
-                            document.getElementById("result").innerText = data.message;
-                        })
-                        .catch(err => {
-                            console.error("Fetch error:", err);
-                            document.getElementById("result").innerText = "Error marking attendance";
-                        });
+                            // Send to backend
+                            fetch(`/mark_attendance/${qrCodeMessage}/`)
+                                .then(res => res.json())
+                                .then(data => {
+                                    document.getElementById("result").innerText = data.message;
+                                })
+                                .catch(err => {
+                                    console.error("Fetch error:", err);
+                                    document.getElementById("result").innerText = "Error marking attendance";
+                                });
 
-                    // Auto-restart scanner after 3 seconds
-                    setTimeout(() => {
-                        document.getElementById("result").innerText = "";
-                        startScanner();
-                    }, 3000);
+                            // Restart scanner after 3 seconds
+                            setTimeout(() => {
+                                document.getElementById("result").innerText = "";
+                                startScanner();
+                            }, 3000);
 
-                }).catch(err => console.error("Stop failed:", err));
-            },
-            errorMessage => {
-                // Optional: show scan errors in console
-                console.warn("QR Scan Error:", errorMessage);
+                        }).catch(err => console.error("Stop failed:", err));
+
+                    },
+                    errorMessage => {
+                        console.warn("QR Scan Error:", errorMessage);
+                    }
+                ).catch(err => {
+                    console.error("Camera start failed:", err);
+                    document.getElementById("result").innerText = "Camera error: " + err;
+                });
+            } else {
+                document.getElementById("result").innerText = "No camera found";
             }
-        ).catch(err => {
-            console.error("Camera start failed:", err);
-            document.getElementById("result").innerText = "Camera error: " + err;
+        }).catch(err => {
+            console.error("Camera access error:", err);
+            document.getElementById("result").innerText = "Cannot access camera";
         });
     }
 
     startScanner();
+
 });
 </script>
 {% endblock %}
