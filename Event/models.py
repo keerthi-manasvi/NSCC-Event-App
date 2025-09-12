@@ -2,8 +2,8 @@ from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
 from django.utils import timezone
 import uuid
+from io import BytesIO
 import qrcode
-import BytesIO
 from django.core.validators import EmailValidator
 
 class User(AbstractUser):
