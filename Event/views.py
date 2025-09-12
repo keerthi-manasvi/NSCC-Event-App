@@ -15,6 +15,7 @@ User = get_user_model()
 
 # QR Generation
 def generate_qr_for_participant(request, participant):
+    scheme = "https" if request.is_secure() else "http"
     host = request.get_host()
     url = f"http://{host}/mark_attendance/{participant.registration_id}/"
     img = qrcode.make(url)
