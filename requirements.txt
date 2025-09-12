@@ -6,6 +6,7 @@ gunicorn
 dj-database-url
 whitenoise
 psycopg2-binary
+openpyxl==3.1.5
 
 # QR Code generation
 qrcode[pil]
