@@ -7,7 +7,7 @@ import dj_database_url
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+os.makedirs(os.path.join(settings.MEDIA_ROOT, 'qr_codes'), exist_ok=True)
 # Security
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'fallback-secret')
 
