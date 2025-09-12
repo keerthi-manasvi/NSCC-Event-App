@@ -5,24 +5,32 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.views.decorators.csrf import csrf_exempt
 from django.core.files.base import ContentFile
 from django.db import IntegrityError
+from django.conf import settings
 import qrcode
 from io import BytesIO
 import openpyxl
 from .forms import RegistrationForm
 from .models import Participant, Attendance
+import os
 
 User = get_user_model()
 
 # QR Generation
 def generate_qr_for_participant(request, participant):
+    # Ensure folder exists
+    qr_folder = os.path.join(settings.MEDIA_ROOT, 'qr_codes')
+    os.makedirs(qr_folder, exist_ok=True)
+
     scheme = "https" if request.is_secure() else "http"
     host = request.get_host()
-    url = f"http://{host}/mark_attendance/{participant.registration_id}/"
+    url = f"{scheme}://{host}/mark_attendance/{participant.registration_id}/"
+
     img = qrcode.make(url)
     buffer = BytesIO()
     img.save(buffer, format='PNG')
     filebuffer = ContentFile(buffer.getvalue())
     filename = f"qr_{participant.registration_id}.png"
+
     participant.qr_code_image.save(filename, filebuffer)
     participant.save()
 
@@ -43,7 +51,7 @@ def participant_qr(request, reg_id):
     participant = get_object_or_404(Participant, registration_id=reg_id)
     return render(request, 'Event/qr.html', {'participant': participant})
 
-# Mark attendance (called via mobile QR scan)
+# Mark attendance
 @csrf_exempt
 def mark_attendance(request, reg_id):
     participant = get_object_or_404(Participant, registration_id=reg_id)
