@@ -17,28 +17,42 @@
         transition: transform 0.3s ease;
     }
 </style>
+
 <div class="card-custom text-center">
     <h2>Scan QR Code</h2>
     <div class="d-flex justify-content-center">
-        <video id="preview" width="400" height="300"></video>
+        <!-- ✅ Html5Qrcode needs a div, not video -->
+        <div id="preview" style="width: 400px; height: 300px;"></div>
     </div>
     <p id="result" class="mt-3 text-primary fw-bold"></p>
 </div>
 
-<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+<!-- ✅ Correct script -->
+<script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+
 <script>
-    const html5QrCode = new Html5Qrcode("preview");
-    html5QrCode.start(
-        { facingMode: "environment" },
-        { fps: 10, qrbox: 250 },
-        qrCodeMessage => {
-            fetch(`/mark_attendance/${qrCodeMessage}/`)
-                .then(res => res.json())
-                .then(data => {
-                    document.getElementById("result").innerText = data.message;
-                })
-                .catch(err => console.error(err));
-        }
-    );
+    document.addEventListener("DOMContentLoaded", () => {
+        const html5QrCode = new Html5Qrcode("preview");
+
+        html5QrCode.start(
+            { facingMode: "environment" },   // Use back camera
+            { fps: 10, qrbox: 250 },        // Scan settings
+            qrCodeMessage => {
+                // Send scanned QR code to backend
+                fetch(`/mark_attendance/${qrCodeMessage}/`)
+                    .then(res => res.json())
+                    .then(data => {
+                        document.getElementById("result").innerText = data.message;
+                    })
+                    .catch(err => console.error(err));
+            },
+            errorMessage => {
+                console.warn("QR Scan Error:", errorMessage);
+            }
+        ).catch(err => {
+            console.error("Camera start failed:", err);
+            document.getElementById("result").innerText = "Camera error: " + err;
+        });
+    });
 </script>
 {% endblock %}
