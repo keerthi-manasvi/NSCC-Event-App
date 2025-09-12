@@ -9,30 +9,34 @@ from django.conf import settings
 import qrcode
 from io import BytesIO
 import openpyxl
+import os
 from .forms import RegistrationForm
 from .models import Participant, Attendance
-import os
 
 User = get_user_model()
 
 # QR Generation
 def generate_qr_for_participant(request, participant):
-    # Ensure folder exists
-    qr_folder = os.path.join(settings.MEDIA_ROOT, 'qr_codes')
-    os.makedirs(qr_folder, exist_ok=True)
+    try:
+        # Ensure folder exists
+        qr_folder = os.path.join(settings.MEDIA_ROOT, 'qr_codes')
+        os.makedirs(qr_folder, exist_ok=True)
 
-    scheme = "https" if request.is_secure() else "http"
-    host = request.get_host()
-    url = f"{scheme}://{host}/mark_attendance/{participant.registration_id}/"
+        scheme = "https" if request.is_secure() else "http"
+        host = request.get_host()
+        url = f"{scheme}://{host}/mark_attendance/{participant.registration_id}/"
 
-    img = qrcode.make(url)
-    buffer = BytesIO()
-    img.save(buffer, format='PNG')
-    filebuffer = ContentFile(buffer.getvalue())
-    filename = f"qr_{participant.registration_id}.png"
+        img = qrcode.make(url)
+        buffer = BytesIO()
+        img.save(buffer, format='PNG')
+        filebuffer = ContentFile(buffer.getvalue())
 
-    participant.qr_code_image.save(filename, filebuffer)
-    participant.save()
+        # Save QR inside MEDIA_ROOT/qr_codes
+        filename = os.path.join('qr_codes', f"qr_{participant.registration_id}.png")
+        participant.qr_code_image.save(filename, filebuffer)
+        participant.save()
+    except Exception as e:
+        print(f"Error generating QR: {e}")
 
 # Participant registration
 def register(request):
@@ -81,7 +85,9 @@ def export_xlsx(request):
         status = attendance.status if attendance else 'Absent'
         ts = attendance.timestamp.strftime('%Y-%m-%d %H:%M:%S') if attendance else ''
         ws.append([p.name, p.email, p.registration_id, status, ts])
-    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response = HttpResponse(
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
     response['Content-Disposition'] = 'attachment; filename=attendance.xlsx'
     wb.save(response)
     return response
