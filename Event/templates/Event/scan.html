@@ -38,13 +38,11 @@
     <div id="preview"></div>
     <p id="result"></p>
 </div>
+{% endblock %}
 
-<!-- Include Html5 QR Code library -->
-<script src="https://unpkg.com/html5-qrcode@2.3.7/minified/html5-qrcode.min.js"></script>
-
+{% block extra_scripts %}
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-
     const qrCodeRegionId = "preview";
     const html5QrCode = new Html5Qrcode(qrCodeRegionId);
 
@@ -60,15 +58,12 @@ document.addEventListener("DOMContentLoaded", () => {
                         console.log("Scanned QR:", qrCodeMessage);
 
                         html5QrCode.stop().then(() => {
-                            console.log("Scanner stopped");
-
                             fetch(`/mark_attendance/${qrCodeMessage}/`)
                                 .then(res => res.json())
                                 .then(data => {
                                     document.getElementById("result").innerText = data.message;
                                 })
-                                .catch(err => {
-                                    console.error("Fetch error:", err);
+                                .catch(() => {
                                     document.getElementById("result").innerText = "Error marking attendance";
                                 });
 
@@ -76,9 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 document.getElementById("result").innerText = "";
                                 startScanner();
                             }, 3000);
-
                         }).catch(err => console.error("Stop failed:", err));
-
                     },
                     errorMessage => {
                         console.warn("QR Scan Error:", errorMessage);
@@ -98,7 +91,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     startScanner();
-
 });
 </script>
 {% endblock %}
