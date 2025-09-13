@@ -15,14 +15,16 @@ User = get_user_model()
 
 # QR Generation (in-memory, Base64)
 def get_qr_base64(participant, request):
-    scheme = "https" if request.is_secure() else "http"
-    host = request.get_host()
+    scheme = "https"
+    host = "nscc1-event-app.onrender.com"  # <-- your deployed domain
     url = f"{scheme}://{host}/mark_attendance/{participant.registration_id}/"
+    
     qr_img = qrcode.make(url)
     buffer = BytesIO()
     qr_img.save(buffer, format="PNG")
     img_str = base64.b64encode(buffer.getvalue()).decode("utf-8")
     return f"data:image/png;base64,{img_str}"
+
 
 # Participant registration
 def register(request):
