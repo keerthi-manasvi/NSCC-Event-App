@@ -21,12 +21,12 @@
         <span class="navbar-brand">EVENT ATTENDANCE</span>
         <div class="d-flex align-items-center flex-wrap">
             {% if user.is_authenticated %}
-                <a class="btn btn-outline-light me-2 btn-sm" href="{% url 'dashboard' %}">Dashboard</a>
-                <a class="btn btn-outline-light btn-sm" href="{% url 'logout' %}">Logout</a>
+                <a class="btn btn-outline-light me-2 btn-sm" href="{% url 'dashboard' %}" style="width:auto; padding:0.4rem 0.8rem; white-space:nowrap; !important" >Dashboard</a>
+                <a class="btn btn-outline-light btn-sm" href="{% url 'logout' %}" style="width:auto; padding:0.4rem 0.8rem; white-space:nowrap; !important" >Logout</a>
             {% else %}
-                <a class="btn btn-outline-light me-2 btn-sm" href="{% url 'register' %}">Register</a>
-                <a class="btn btn-outline-light me-2 btn-sm" href="{% url 'scan' %}">Scan QR</a>
-                <a class="btn btn-outline-light btn-sm" href="{% url 'login' %}">Login</a>
+                <a class="btn btn-outline-light me-2 btn-sm" href="{% url 'register' %}" style="width:auto; padding:0.4rem 0.8rem; white-space:nowrap; !important" >Register</a>
+                <a class="btn btn-outline-light me-2 btn-sm" href="{% url 'scan' %}" style="width:auto; padding:0.4rem 0.8rem; white-space:nowrap; !important" >Scan QR</a>
+                <a class="btn btn-outline-light btn-sm" href="{% url 'login' %}" style="width:auto; padding:0.4rem 0.8rem; white-space:nowrap; !important" >Login</a>
             {% endif %}
         </div>
     </nav>
