@@ -14,6 +14,7 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "dev-secret-key")  # fallback f
 DEBUG = os.environ.get("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = ["nscc1-event-app.onrender.com"]
+CSRF_TRUSTED_ORIGINS = ["https://nscc1-event-app.onrender.com"]
 
 # Installed apps
 INSTALLED_APPS = [
