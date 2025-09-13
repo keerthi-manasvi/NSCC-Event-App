@@ -1,6 +1,6 @@
-# NSCC Event Attendance & Registration System
+# Event Attendance & Registration System
 
-NSCC Event Attendance & Registration System is a web-based platform designed to streamline event registration and attendance tracking using QR codes. It enables participants to register for events and check in via QR scanning, while providing organizers with real-time attendance monitoring and export capabilities.
+Event Attendance & Registration System is a web-based platform designed to streamline event registration and attendance tracking using QR codes. It enables participants to register for events and check in via QR scanning, while providing organizers with real-time attendance monitoring and export capabilities.
 
 ---
 
@@ -83,15 +83,6 @@ https://nscc1-event-app.onrender.com/
 
 ---
 
-## Contributing
-
-Contributions are welcome. Feel free to fork the repository and submit a pull request.
-
----
-
 ## License
 
 MIT License
-```
-
-Let me know if you'd like help writing the admin login views or integrating the QR scanner into the dashboard.
