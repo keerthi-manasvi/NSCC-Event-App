@@ -30,20 +30,6 @@ header h1,
     text-decoration: none;
 }
 
-/* === Navbar Buttons Always Horizontal & Auto Size === */
-.navbar .d-flex {
-    flex-direction: row !important; /* force horizontal */
-    flex-wrap: nowrap !important;    /* prevent stacking */
-    gap: 0.5rem;
-}
-
-.navbar .btn {
-    width: auto !important;      /* fit button to text */
-    padding: 0.5rem 1rem;
-    white-space: nowrap;         /* prevent text wrap */
-    font-size: 0.9rem;
-}
-
 /* === Navigation Buttons Styling === */
 nav a,
 .navbar .btn {
