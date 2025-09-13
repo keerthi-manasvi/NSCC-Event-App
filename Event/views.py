@@ -36,6 +36,7 @@ def generate_qr_for_participant(request, participant):
         # Only filename (Django will put it inside qr_codes/)
         filename = f"qr_{participant.registration_id}.png"
         participant.qr_code_image.save(filename, filebuffer, save=True)
+        print("Saving QR:", participant.qr_code_image.path)
     except Exception as e:
         print(f"Error generating QR: {e}")
 
