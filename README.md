@@ -28,9 +28,6 @@ This system allows users to register for events by submitting their name, email,
 
 ### Enhanced Capabilities
 
-- **Admin Dashboard**  
-  Organizers can view live attendance stats and download Excel reports.
-
 - **Excel Export**  
   Attendance data includes: Name, Email, ID, Status, Timestamp.
 
