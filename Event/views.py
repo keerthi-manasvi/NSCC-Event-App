@@ -3,42 +3,27 @@ from django.http import JsonResponse, HttpResponse
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.admin.views.decorators import staff_member_required
 from django.views.decorators.csrf import csrf_exempt
-from django.core.files.base import ContentFile
 from django.db import IntegrityError
-from django.conf import settings
 import qrcode
 from io import BytesIO
+import base64
 import openpyxl
-import os
 from .forms import RegistrationForm
 from .models import Participant, Attendance
 
 User = get_user_model()
 
-# QR Generation
-def generate_qr_for_participant(request, participant):
-    try:
-        # Make sure qr_codes folder exists inside MEDIA_ROOT
-        qr_folder = os.path.join(settings.MEDIA_ROOT, 'qr_codes')
-        os.makedirs(qr_folder, exist_ok=True)
+# QR Generation (in-memory, temporary)
+def generate_qr_url(request, participant):
+    scheme = "https" if request.is_secure() else "http"
+    host = request.get_host()
+    url = f"{scheme}://{host}/mark_attendance/{participant.registration_id}/"
 
-        # The QR code will point to attendance marking URL
-        scheme = "https" if request.is_secure() else "http"
-        host = request.get_host()
-        url = f"{scheme}://{host}/mark_attendance/{participant.registration_id}/"
-
-        # Generate QR code
-        img = qrcode.make(url)
-        buffer = BytesIO()
-        img.save(buffer, format='PNG')
-        filebuffer = ContentFile(buffer.getvalue())
-
-        # Only filename (Django will put it inside qr_codes/)
-        filename = f"qr_{participant.registration_id}.png"
-        participant.qr_code_image.save(filename, filebuffer, save=True)
-        print("Saving QR:", participant.qr_code_image.path)
-    except Exception as e:
-        print(f"Error generating QR: {e}")
+    img = qrcode.make(url)
+    buffer = BytesIO()
+    img.save(buffer, format="PNG")
+    qr_base64 = base64.b64encode(buffer.getvalue()).decode()
+    return f"data:image/png;base64,{qr_base64}"
 
 # Participant registration
 def register(request):
@@ -46,16 +31,16 @@ def register(request):
         form = RegistrationForm(request.POST)
         if form.is_valid():
             participant = form.save()
-            generate_qr_for_participant(request, participant)
             return redirect('participant_qr', reg_id=participant.registration_id)
     else:
         form = RegistrationForm()
     return render(request, 'Event/register.html', {'form': form})
 
-# Show QR code
+# Show QR code (temporary)
 def participant_qr(request, reg_id):
     participant = get_object_or_404(Participant, registration_id=reg_id)
-    return render(request, 'Event/qr.html', {'participant': participant})
+    qr_image = generate_qr_url(request, participant)
+    return render(request, 'Event/qr.html', {'participant': participant, 'qr_image': qr_image})
 
 # Mark attendance
 @csrf_exempt
