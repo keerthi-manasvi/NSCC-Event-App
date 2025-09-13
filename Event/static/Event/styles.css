@@ -63,15 +63,8 @@ nav a:hover,
 }
 
 @keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* === Form Container === */
@@ -88,13 +81,18 @@ nav a:hover,
 }
 
 /* === Table Styling === */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 1rem;
-    display: block;
+.table-container {
     overflow-x: auto;
-    white-space: nowrap;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+table {
+    width: auto; /* Adjust to content */
+    min-width: 600px; /* Prevent too narrow table */
+    border-collapse: collapse;
+    margin: 1rem 0;
 }
 
 thead {
@@ -117,15 +115,8 @@ td {
     font-weight: 600;
 }
 
-.bg-success {
-    background-color: #10b981;
-    color: white;
-}
-
-.bg-danger {
-    background-color: #ef4444;
-    color: white;
-}
+.bg-success { background-color: #10b981; color: white; }
+.bg-danger { background-color: #ef4444; color: white; }
 
 /* === Buttons === */
 .btn {
@@ -137,6 +128,7 @@ td {
     transition: all 0.3s ease-in-out;
     margin-top: 1rem;
     font-size: 1rem;
+    width: auto;  /* Keep auto width */
 }
 
 .button-container {
@@ -147,35 +139,12 @@ td {
     flex-wrap: wrap;
 }
 
-.btn-primary {
-    background-color: black;
-    color: white;
-    border: none;
-}
-
-.btn-primary:hover {
-    background-color: #333;
-}
-
-.btn-secondary {
-    background-color: #0d6efd;
-    color: white;
-    border: none;
-}
-
-.btn-secondary:hover {
-    background-color: #4b5563;
-}
-
-.btn-success {
-    background-color: #10b981;
-    color: white;
-    border: none;
-}
-
-.btn-success:hover {
-    background-color: #059669;
-}
+.btn-primary { background-color: black; color: white; border: none; }
+.btn-primary:hover { background-color: #333; }
+.btn-secondary { background-color: #0d6efd; color: white; border: none; }
+.btn-secondary:hover { background-color: #4b5563; }
+.btn-success { background-color: #10b981; color: white; border: none; }
+.btn-success:hover { background-color: #059669; }
 
 /* === Forms === */
 form {
@@ -197,15 +166,8 @@ form {
     box-sizing: border-box;
 }
 
-.form-control:focus {
-    border-color: #10b981;
-    box-shadow: 0 0 0 0.2rem rgba(16, 185, 129, 0.25);
-    outline: none;
-}
-
-.form-control:hover {
-    border-color: #10b981;
-}
+.form-control:focus { border-color: #10b981; box-shadow: 0 0 0 0.2rem rgba(16, 185, 129, 0.25); outline: none; }
+.form-control:hover { border-color: #10b981; }
 
 /* === Alerts === */
 .alert-danger {
@@ -226,58 +188,43 @@ footer {
 }
 
 /* === Responsive Design === */
-@media (max-width: 768px) {
-    .navbar {
-        flex-direction: column;
-        align-items: stretch;
+
+/* Mid-size screens (tablet/laptop minimized) */
+@media (max-width: 1024px) and (min-width: 769px) {
+    .navbar .d-flex {
+        flex-direction: row;      /* Horizontal buttons */
+        justify-content: flex-end; /* Align right */
+        gap: 0.5rem;
     }
 
-    .navbar-brand {
-        font-size: 1.5rem;
-        margin-bottom: 0.5rem;
-    }
-
-    nav a,
     .navbar .btn {
-        display: block;
-        margin: 0.5rem auto;
-        width: 100%;
-        text-align: center;
-    }
-
-    .glass-card,
-    .card-body,
-    form {
-        padding: 1.5rem;
-        margin: 1rem;
-    }
-
-    .card-title {
-        font-size: 1.5rem;
-    }
-
-    th,
-    td {
-        font-size: 0.8rem;
-    }
-
-    .btn {
-        font-size: 0.9rem;
-        padding: 0.5rem 1rem;
+        width: auto;
+        max-width: 180px;
     }
 }
 
-@media (max-width: 480px) {
-    body {
-        font-size: 0.9rem;
+/* Small screens (mobile) */
+@media (max-width: 768px) {
+    .navbar .d-flex {
+        flex-direction: column;   /* Stack buttons vertically */
+        align-items: center;
+        gap: 0.5rem;
     }
 
-    .card-title {
-        font-size: 1.25rem;
+    .navbar .btn {
+        width: auto;
+        max-width: 180px;
+        text-align: center;
     }
+}
 
-    .btn {
-        font-size: 0.85rem;
-        padding: 0.5rem 0.75rem;
+/* Center table and keep horizontal scroll on small screens */
+@media (max-width: 1024px) {
+    .table-container {
+        justify-content: center;
+    }
+    table {
+        width: 100%;
+        min-width: 400px;
     }
 }
