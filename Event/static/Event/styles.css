@@ -20,6 +20,20 @@ header,
     justify-content: space-between;
     align-items: center;
 }
+/* === Navbar Buttons Always Horizontal & Auto Size === */
+.navbar .d-flex {
+    flex-wrap: nowrap !important;   /* prevent wrapping */
+    gap: 0.5rem;                    /* space between buttons */
+    align-items: center;            /* vertical alignment */
+}
+
+.navbar .btn {
+    width: auto !important;         /* button width fits text */
+    padding: 0.4rem 0.8rem !important; /* neat padding */
+    white-space: nowrap !important; /* prevent text wrapping inside button */
+    font-size: 0.9rem;
+}
+
 
 header h1,
 .navbar-brand {
