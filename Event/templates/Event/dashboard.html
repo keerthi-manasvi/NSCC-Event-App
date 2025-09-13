@@ -17,8 +17,8 @@
 
     <!-- Table container for centering and scroll -->
     <div class="table-container">
-        <table class="table table-striped table-bordered" style="margin:auto; min-width:600px;">
-            <thead class="table-primary" style="text-align: center !important; vertical-align: middle !important;">
+        <table class="table table-striped table-bordered" style="margin:auto; min-width:1000px;">
+            <thead class="table-primary" style=" margin-right: 30rm !important;text-align: center !important; vertical-align: middle !important;">
                 <tr>
                     <th>Name</th>
                     <th>Email</th>
@@ -62,7 +62,7 @@
 
     {% if request.user.is_staff %}
     <div class="d-flex gap-3 mt-3">
-        <a href="{% url 'export_excel' %}" class="btn btn-success" style="width:auto; display:inline-block; white-space:nowrap; padding:0.5rem 1rem;">Download Attendance Excel</a>
+        <a href="{% url 'export_excel' %}" class="btn btn-success" style="width:auto !important; display:inline-block !important; white-space:nowrap !important; padding:0.5rem 1rem !important; ">Download Attendance Excel</a>
         <form action="{% url 'clear_participants' %}" method="post" onsubmit="return confirm('Delete all participants?');">
             {% csrf_token %}
             <button type="submit" class="btn btn-danger">Clear All</button>
