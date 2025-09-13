@@ -31,12 +31,11 @@ def generate_qr_for_participant(request, participant):
         img.save(buffer, format='PNG')
         filebuffer = ContentFile(buffer.getvalue())
 
-        # Save QR inside MEDIA_ROOT/qr_codes
-        filename = os.path.join('qr_codes', f"qr_{participant.registration_id}.png")
-        participant.qr_code_image.save(filename, filebuffer)
-        participant.save()
+        filename = f"qr_{participant.registration_id}.png"
+        participant.qr_code_image.save(filename, filebuffer, save=True)
     except Exception as e:
         print(f"Error generating QR: {e}")
+
 
 # Participant registration
 def register(request):
