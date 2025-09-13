@@ -5,57 +5,117 @@
 {% block content %}
 <div class="card-custom">
     <h2 class="mb-3" style="margin-top: 130px;">Admin Dashboard</h2>
-    <table class="table table-striped table-bordered">
-        <thead class="table-primary">
-            <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>ID</th>
-                <th>Status</th>
-                <th>Timestamp</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% load tz %}
-            {% for p in participants %}
-            <tr>
-                <td>{{ p.name }}</td>
-                <td>{{ p.email }}</td>
-                <td>{{ p.registration_id }}</td>
-                <td>
-                    {% if p.attendance %}
-                    {% if p.attendance.status == "Present" %}
-                    <span class="badge bg-success">Present</span>
-                    {% else %}
-                    <span class="badge bg-warning">{{ p.attendance.status }}</span>
-                    {% endif %}
-                    {% else %}
-                    <span class="badge bg-danger">Absent</span>
-                    {% endif %}
-                </td>
-                <td>
-                    {% if p.attendance %}
-                    {% timezone "Asia/Kolkata" %}
-                    {{ p.attendance.timestamp|date:"Y-m-d H:i:s" }}
-                    {% endtimezone %}
-                    {% else %}
-                    -
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+
+    <!-- Table container for centering and scroll -->
+    <div class="table-container" style="overflow-x:auto; text-align:center;">
+        <table class="table table-striped table-bordered" style="margin:auto; min-width:600px;">
+            <thead class="table-primary">
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>ID</th>
+                    <th>Status</th>
+                    <th>Timestamp</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% load tz %}
+                {% for p in participants %}
+                <tr>
+                    <td>{{ p.name }}</td>
+                    <td>{{ p.email }}</td>
+                    <td>{{ p.registration_id }}</td>
+                    <td>
+                        {% if p.attendance %}
+                            {% if p.attendance.status == "Present" %}
+                                <span class="badge bg-success">Present</span>
+                            {% else %}
+                                <span class="badge bg-warning">{{ p.attendance.status }}</span>
+                            {% endif %}
+                        {% else %}
+                            <span class="badge bg-danger">Absent</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if p.attendance %}
+                            {% timezone "Asia/Kolkata" %}
+                            {{ p.attendance.timestamp|date:"Y-m-d H:i:s" }}
+                            {% endtimezone %}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
     {% if request.user.is_staff %}
-    <div class="d-flex gap-3 mt-3">
+    <div class="d-flex gap-3 mt-3 justify-content-center flex-wrap">
         <a href="{% url 'export_excel' %}" class="btn btn-success">Download Attendance Excel</a>
-        <form action="{% url 'clear_participants' %}" method="post"
-            onsubmit="return confirm('Delete all participants?');">
+        <form action="{% url 'clear_participants' %}" method="post" onsubmit="return confirm('Delete all participants?');">
             {% csrf_token %}
             <button type="submit" class="btn btn-danger">Clear All</button>
         </form>
     </div>
     {% endif %}
 </div>
+{% endblock %}
+
+{% block extra_styles %}
+<style>
+/* Table container ensures horizontal scroll on small screens */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+/* Table min width ensures proper spacing on large screens */
+.table-container table {
+    min-width: 600px;
+}
+
+/* Buttons stay properly sized */
+.d-flex.gap-3 .btn {
+    flex: 0 0 auto; /* prevents stretching */
+    min-width: 150px;
+    margin-bottom: 0.5rem;
+}
+
+/* Card custom */
+.card-custom {
+    margin: 2rem auto;
+    max-width: 95%;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    box-shadow: 8px 1px 8px 6px rgba(119, 110, 110, 0.1);
+}
+
+/* Make table text center aligned */
+.table-container table th,
+.table-container table td {
+    text-align: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .card-custom {
+        padding: 1rem;
+    }
+    .table-container table {
+        min-width: 500px;
+    }
+}
+@media (max-width: 480px) {
+    .table-container table {
+        min-width: 400px;
+    }
+    .d-flex.gap-3 .btn {
+        min-width: 120px;
+    }
+}
+</style>
 {% endblock %}
