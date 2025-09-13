@@ -62,7 +62,8 @@
                             console.log("Scanned QR:", qrCodeMessage);
 
                             html5QrCode.stop().then(() => {
-                                fetch(`/mark_attendance/${qrCodeMessage}/`)
+                                let regId = qrCodeMessage.split("/").filter(Boolean).pop();  // get the last part
+                                fetch(`/mark_attendance/${regId}/`)
                                     .then(res => res.json())
                                     .then(data => {
                                         document.getElementById("result").innerText = data.message;
