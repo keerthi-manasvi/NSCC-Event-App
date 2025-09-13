@@ -1,5 +1,4 @@
 {% extends "Event/layout.html" %}
-{% load static %}
 {% block title %}Your QR Code{% endblock %}
 
 {% block content %}
@@ -7,8 +6,8 @@
     <h2>Your Event QR Code</h2>
     <p>Please save this QR code. You’ll need it to mark your attendance.</p>
 
-    {% if qr_image %}
-    <img src="{{ qr_image }}" alt="QR Code" class="qr-image">
+    {% if qr_base64 %}
+    <img src="{{ qr_base64 }}" alt="QR Code" class="qr-image">
     {% else %}
     <p class="text-danger">QR code not generated yet.</p>
     {% endif %}
