@@ -18,24 +18,26 @@ User = get_user_model()
 # QR Generation
 def generate_qr_for_participant(request, participant):
     try:
-        # Ensure folder exists
+        # Make sure qr_codes folder exists inside MEDIA_ROOT
         qr_folder = os.path.join(settings.MEDIA_ROOT, 'qr_codes')
         os.makedirs(qr_folder, exist_ok=True)
 
+        # The QR code will point to attendance marking URL
         scheme = "https" if request.is_secure() else "http"
         host = request.get_host()
         url = f"{scheme}://{host}/mark_attendance/{participant.registration_id}/"
 
+        # Generate QR code
         img = qrcode.make(url)
         buffer = BytesIO()
         img.save(buffer, format='PNG')
         filebuffer = ContentFile(buffer.getvalue())
 
+        # Only filename (Django will put it inside qr_codes/)
         filename = f"qr_{participant.registration_id}.png"
         participant.qr_code_image.save(filename, filebuffer, save=True)
     except Exception as e:
         print(f"Error generating QR: {e}")
-
 
 # Participant registration
 def register(request):
