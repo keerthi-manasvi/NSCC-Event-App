@@ -13,83 +13,82 @@ from .models import Participant, Attendance
 
 User = get_user_model()
 
-# QR Generation (in-memory, temporary)
-def generate_qr_url(request, participant):
+# QR Generation (in-memory, Base64)
+def get_qr_base64(participant, request):
     scheme = "https" if request.is_secure() else "http"
     host = request.get_host()
     url = f"{scheme}://{host}/mark_attendance/{participant.registration_id}/"
-
-    img = qrcode.make(url)
+    qr_img = qrcode.make(url)
     buffer = BytesIO()
-    img.save(buffer, format="PNG")
-    qr_base64 = base64.b64encode(buffer.getvalue()).decode()
-    return f"data:image/png;base64,{qr_base64}"
+    qr_img.save(buffer, format="PNG")
+    img_str = base64.b64encode(buffer.getvalue()).decode("utf-8")
+    return f"data:image/png;base64,{img_str}"
 
 # Participant registration
 def register(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = RegistrationForm(request.POST)
         if form.is_valid():
             participant = form.save()
-            return redirect('participant_qr', reg_id=participant.registration_id)
+            return redirect("participant_qr", reg_id=participant.registration_id)
     else:
         form = RegistrationForm()
-    return render(request, 'Event/register.html', {'form': form})
+    return render(request, "Event/register.html", {"form": form})
 
-# Show QR code (temporary)
+# Show QR code
 def participant_qr(request, reg_id):
     participant = get_object_or_404(Participant, registration_id=reg_id)
-    qr_image = generate_qr_url(request, participant)
-    return render(request, 'Event/qr.html', {'participant': participant, 'qr_image': qr_image})
+    qr_base64 = get_qr_base64(participant, request)
+    return render(request, "Event/qr.html", {"participant": participant, "qr_base64": qr_base64})
 
 # Mark attendance
 @csrf_exempt
 def mark_attendance(request, reg_id):
     participant = get_object_or_404(Participant, registration_id=reg_id)
-    if request.method in ['GET', 'POST']:
+    if request.method in ["GET", "POST"]:
         try:
             Attendance.objects.create(participant=participant)
             message = f"✅ Attendance marked for {participant.name}"
         except IntegrityError:
             message = f"⚠️ Already marked for {participant.name}"
-        return JsonResponse({'message': message})
-    return JsonResponse({'error': 'Invalid request method'}, status=405)
+        return JsonResponse({"message": message})
+    return JsonResponse({"error": "Invalid request method"}, status=405)
 
 # Scan page
 def scan_page(request):
-    return render(request, 'Event/scan.html')
+    return render(request, "Event/scan.html")
 
 # Export attendance to Excel
 @staff_member_required
 def export_xlsx(request):
-    participants = Participant.objects.all().order_by('name')
+    participants = Participant.objects.all().order_by("name")
     wb = openpyxl.Workbook()
     ws = wb.active
     ws.title = "Attendance"
-    ws.append(['Name', 'Email', 'Registration ID', 'Status', 'Timestamp'])
+    ws.append(["Name", "Email", "Registration ID", "Status", "Timestamp"])
     for p in participants:
-        attendance = getattr(p, 'attendance', None)
-        status = attendance.status if attendance else 'Absent'
-        ts = attendance.timestamp.strftime('%Y-%m-%d %H:%M:%S') if attendance else ''
+        attendance = getattr(p, "attendance", None)
+        status = attendance.status if attendance else "Absent"
+        ts = attendance.timestamp.strftime("%Y-%m-%d %H:%M:%S") if attendance else ""
         ws.append([p.name, p.email, p.registration_id, status, ts])
     response = HttpResponse(
-        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
-    response['Content-Disposition'] = 'attachment; filename=attendance.xlsx'
+    response["Content-Disposition"] = "attachment; filename=attendance.xlsx"
     wb.save(response)
     return response
 
 # Dashboard
 @staff_member_required
 def dashboard(request):
-    participants = Participant.objects.all().order_by('name')
-    return render(request, 'Event/dashboard.html', {'participants': participants})
+    participants = Participant.objects.all().order_by("name")
+    return render(request, "Event/dashboard.html", {"participants": participants})
 
 # Clear participants
 @staff_member_required
 def clear_participants(request):
     Participant.objects.all().delete()
-    return redirect('dashboard')
+    return redirect("dashboard")
 
 # Authentication
 def SignUp_view(request):
