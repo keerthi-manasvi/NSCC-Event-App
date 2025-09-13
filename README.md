@@ -68,3 +68,7 @@ To run the project locally:
 git clone https://github.com/keerthi-manasvi/NSCC-Event-App.git
 cd NSCC-Event-App
 npm install
+
+---
+## Live Deployment
+You can access the deployed version of the app https://nscc1-event-app.onrender.com/
