@@ -31,11 +31,24 @@ header h1,
     text-decoration: none;
 }
 
-/* === Navigation Buttons === */
+/* === Navbar Buttons Always Horizontal & Auto Size === */
+.navbar .d-flex {
+    flex-direction: row !important; /* force horizontal */
+    flex-wrap: nowrap !important;    /* prevent stacking */
+    gap: 0.5rem;
+}
+
+.navbar .btn {
+    width: auto !important;      /* fit button to text */
+    padding: 0.5rem 1rem;
+    white-space: nowrap;         /* prevent text wrap */
+    font-size: 0.9rem;
+}
+
+/* === Navigation Buttons Styling === */
 nav a,
 .navbar .btn {
     margin: 0 0.5rem;
-    padding: 0.4rem 0.8rem;
     background-color: transparent;
     color: white;
     border: 1px solid white;
@@ -52,59 +65,46 @@ nav a:hover,
 }
 
 /* === Card Styling === */
-.glass-card {
+.card-custom {
+    margin: 2rem auto;
+    max-width: 95%;
+    padding: 2rem;
     background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(10px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
     border-radius: 12px;
-    padding: 2rem;
-    animation: fadeInUp 0.6s ease-out;
-    box-sizing: border-box;
-}
+    box-shadow: 8px 1px 8px 6px rgba(119, 110, 110, 0.1);
 
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* === Form Container === */
-.card-body {
-    margin-top: 90px;
-    width: 100%;
-}
-
-/* === Titles === */
-.card-title {
-    font-size: 1.75rem;
-    font-weight: 600;
-    color: #1f2937;
+    /* Center content horizontally */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 
 /* === Table Styling === */
 .table-container {
+    width: 100%;
     overflow-x: auto;
     display: flex;
-    justify-content: center;
-    width: 100%;
+    justify-content: center; /* center table */
 }
 
-table {
-    width: auto; /* Adjust to content */
-    min-width: 600px; /* Prevent too narrow table */
+.table-container table {
+    min-width: 600px; /* prevent too narrow table */
     border-collapse: collapse;
     margin: 1rem 0;
 }
 
-thead {
-    background-color: #e0e7ff;
-}
-
-th,
-td {
+table th,
+table td {
     padding: 0.75rem;
-    text-align: left;
+    text-align: center;
     border-bottom: 1px solid #e5e7eb;
     font-size: 0.875rem;
+}
+
+thead {
+    background-color: #e0e7ff;
 }
 
 /* === Badges === */
@@ -116,35 +116,26 @@ td {
 }
 
 .bg-success { background-color: #10b981; color: white; }
+.bg-warning { background-color: #facc15; color: black; }
 .bg-danger { background-color: #ef4444; color: white; }
 
-/* === Buttons === */
-.btn {
-    display: inline-block;
-    padding: 0.6rem 1.2rem;
-    border-radius: 8px;
-    font-weight: 500;
-    text-decoration: none;
-    transition: all 0.3s ease-in-out;
-    margin-top: 1rem;
-    font-size: 1rem;
-    width: auto;  /* Keep auto width */
+/* === Buttons inside dashboard === */
+.card-custom .d-flex.gap-3 .btn {
+    flex: 0 0 auto;      /* prevent stretching */
+    width: auto;         /* fit text */
+    padding: 0.5rem 1rem;
+    margin-bottom: 0.5rem;
+    white-space: nowrap;
 }
 
-.button-container {
+/* Optional: Button group inline for download/clear */
+.button-group {
     display: flex;
-    justify-content: flex-start;
-    gap: 0.5rem;
-    margin-top: 1rem;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
     flex-wrap: wrap;
 }
-
-.btn-primary { background-color: black; color: white; border: none; }
-.btn-primary:hover { background-color: #333; }
-.btn-secondary { background-color: #0d6efd; color: white; border: none; }
-.btn-secondary:hover { background-color: #4b5563; }
-.btn-success { background-color: #10b981; color: white; border: none; }
-.btn-success:hover { background-color: #059669; }
 
 /* === Forms === */
 form {
@@ -188,37 +179,6 @@ footer {
 }
 
 /* === Responsive Design === */
-
-/* Mid-size screens (tablet/laptop minimized) */
-@media (max-width: 1024px) and (min-width: 769px) {
-    .navbar .d-flex {
-        flex-direction: row;      /* Horizontal buttons */
-        justify-content: flex-end; /* Align right */
-        gap: 0.5rem;
-    }
-
-    .navbar .btn {
-        width: auto;
-        max-width: 180px;
-    }
-}
-
-/* Small screens (mobile) */
-@media (max-width: 768px) {
-    .navbar .d-flex {
-        flex-direction: column;   /* Stack buttons vertically */
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    .navbar .btn {
-        width: auto;
-        max-width: 180px;
-        text-align: center;
-    }
-}
-
-/* Center table and keep horizontal scroll on small screens */
 @media (max-width: 1024px) {
     .table-container {
         justify-content: center;
@@ -226,5 +186,23 @@ footer {
     table {
         width: 100%;
         min-width: 400px;
+    }
+}
+
+@media (max-width: 768px) {
+    .card-custom {
+        padding: 1rem;
+    }
+    .table-container table {
+        min-width: 500px;
+    }
+}
+
+@media (max-width: 480px) {
+    .table-container table {
+        min-width: 400px;
+    }
+    .card-custom .d-flex.gap-3 .btn {
+        padding: 0.4rem 0.8rem;
     }
 }
