@@ -13,7 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "dev-secret-key")  # fallback for local dev
 DEBUG = os.environ.get("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = ["nscc-event-app3.onrender.com"]
+ALLOWED_HOSTS = ["nscc1-event-app.onrender.com"]
 
 # Installed apps
 INSTALLED_APPS = [
