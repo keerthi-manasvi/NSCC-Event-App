@@ -3,14 +3,12 @@
 {% block title %}Your QR Code{% endblock %}
 
 {% block content %}
-print("Saving QR:", participant.qr_code_image.path)
 <div class="card-custom text-center">
     <h2>Your Event QR Code</h2>
     <p>Please save this QR code. You’ll need it to mark your attendance.</p>
 
-    {% if participant.qr_code_image %}
-    <img src="{{ participant.qr_code_image.url }}" alt="QR Code" class="qr-image">
-    <a href="{{ participant.qr_code_image.url }}" download class="btn btn-primary">Download QR Code</a>
+    {% if qr_image %}
+    <img src="{{ qr_image }}" alt="QR Code" class="qr-image">
     {% else %}
     <p class="text-danger">QR code not generated yet.</p>
     {% endif %}
