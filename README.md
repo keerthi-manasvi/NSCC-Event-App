@@ -1,3 +1,4 @@
+##(Files in 'master branch')
 # Event Attendance & Registration System
 
 Event Attendance & Registration System is a web-based platform designed to streamline event registration and attendance tracking using QR codes. It enables participants to register for events and check in via QR scanning, while providing organizers with real-time attendance monitoring and export capabilities.
